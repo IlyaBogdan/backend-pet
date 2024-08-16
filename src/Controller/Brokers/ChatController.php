@@ -32,8 +32,10 @@ class ChatController extends AbstractController
     public function createChat(Request $request): Response
     {
         $parameters = json_decode($request->getContent(), true);
-        if (!$chat = $this->chatRepository->findByUsers($parameters['users']))
+        if (!$chat = $this->chatRepository->findByUsers($parameters['users'])) {
             $chat = $this->service->createChat($request);
+        }
+
         $dto = $this->chatDtoTransformer->transformFromObject($chat);
         return new JsonResponse($dto);
     }
@@ -42,8 +44,11 @@ class ChatController extends AbstractController
     public function chatList(Request $request): Response
     {
         $userId = $request->query->get('user');
-        if ($userId) $chats = $this->chatRepository->findByUserId($userId);
-        else $chats = $this->chatRepository->findAll();
+        if ($userId) {
+            $chats = $this->chatRepository->findByUserId($userId);
+        } else {
+            $chats = $this->chatRepository->findAll();
+        }
 
         $dto = $this->chatDtoTransformer->transformFromObjects($chats);
         return new JsonResponse($dto);

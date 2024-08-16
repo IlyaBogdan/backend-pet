@@ -75,7 +75,7 @@ class ChatBrokerService
         $chat = $this->chatRepository->findOneBy(['id' => $chatId]);
 
         $message = new Message();
-        $message->setMessage($parameters['content']);
+        $message->setMessage($parameters['message']);
         $user = $this->userRepository->findOneBy(['id' => $parameters['author']['id']]);
         $message->setUser($user);
         $message->setCreatedAt(now());
